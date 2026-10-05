@@ -1,0 +1,1253 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "name": "Rohith Krishna",
+      "title": "Platform superuser",
+      "superuser": true,
+      "username": "u1"
+    },
+    {
+      "id": "u2",
+      "name": "Ananya Rao",
+      "title": "Project manager",
+      "username": "u2"
+    },
+    {
+      "id": "u3",
+      "name": "Kiran Shah",
+      "title": "Finance approver",
+      "username": "u3"
+    },
+    {
+      "id": "u4",
+      "name": "Ravi Kumar",
+      "title": "Site engineer",
+      "username": "u4"
+    }
+  ],
+  "tenants": [
+    {
+      "id": "t1",
+      "name": "Skyline Residences",
+      "code": "SKY",
+      "location": "Hyderabad, Telangana"
+    },
+    {
+      "id": "t2",
+      "name": "Northgate Business Park",
+      "code": "NGP",
+      "location": "Bengaluru, Karnataka"
+    },
+    {
+      "id": "t3",
+      "name": "Lakeview Villas",
+      "code": "LKV",
+      "location": "Hyderabad, Telangana"
+    }
+  ],
+  "reras": [
+    {
+      "id": "r1",
+      "tenantId": "t1",
+      "number": "501008742631",
+      "bank": "HDFC Bank",
+      "ifsc": "HDFC0000214",
+      "label": "Project receipts · Phase I"
+    },
+    {
+      "id": "r2",
+      "tenantId": "t1",
+      "number": "501008742649",
+      "bank": "HDFC Bank",
+      "ifsc": "HDFC0000214",
+      "label": "Project expenses · Phase II"
+    },
+    {
+      "id": "r3",
+      "tenantId": "t2",
+      "number": "019405000672",
+      "bank": "ICICI Bank",
+      "ifsc": "ICIC0000194",
+      "label": "Project receipts · Main block"
+    }
+  ],
+  "roles": [
+    {
+      "id": "manager",
+      "name": "Project Manager",
+      "stage": "manager",
+      "permissions": {
+        "work_order": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject",
+            "amend"
+          ],
+          "fields": {
+            "amount": "view",
+            "description": "edit",
+            "reason": "edit",
+            "contract_package": "edit",
+            "retention": "edit",
+            "unit": "edit",
+            "period": "edit",
+            "quantity": "edit",
+            "purchase_reference": "edit"
+          }
+        },
+        "rera_account": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "number": "view",
+            "bank": "view",
+            "ifsc": "view",
+            "label": "view"
+          }
+        },
+        "vendor": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "name": "view",
+            "trade": "view",
+            "contactName": "view",
+            "phone": "view",
+            "email": "view",
+            "gstin": "view",
+            "address": "view"
+          }
+        },
+        "purchase_order": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "materials": "edit",
+            "order_date": "edit"
+          }
+        },
+        "inventory": {
+          "actions": [
+            "view",
+            "create",
+            "edit"
+          ],
+          "fields": {
+            "materials": "edit",
+            "quantity": "edit"
+          }
+        },
+        "expense": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "category": "edit",
+            "dates": "edit",
+            "remarks": "edit",
+            "reference": "edit"
+          }
+        },
+        "payment": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject",
+            "amend"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "category": "edit",
+            "dates": "edit",
+            "remarks": "edit",
+            "reference": "edit"
+          }
+        }
+      }
+    },
+    {
+      "id": "finance",
+      "name": "Finance Approver",
+      "stage": "finance",
+      "permissions": {
+        "work_order": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject",
+            "amend"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "view",
+            "reason": "edit",
+            "contract_package": "edit",
+            "retention": "edit",
+            "unit": "edit",
+            "period": "edit",
+            "quantity": "edit",
+            "purchase_reference": "edit"
+          }
+        },
+        "rera_account": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "number": "view",
+            "bank": "view",
+            "ifsc": "view",
+            "label": "view"
+          }
+        },
+        "vendor": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "name": "view",
+            "trade": "view",
+            "contactName": "view",
+            "phone": "view",
+            "email": "view",
+            "gstin": "view",
+            "address": "view"
+          }
+        },
+        "purchase_order": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "materials": "edit",
+            "order_date": "edit"
+          }
+        },
+        "inventory": {
+          "actions": [
+            "view",
+            "create",
+            "edit"
+          ],
+          "fields": {
+            "materials": "edit",
+            "quantity": "edit"
+          }
+        },
+        "expense": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "category": "edit",
+            "dates": "edit",
+            "remarks": "edit",
+            "reference": "edit"
+          }
+        },
+        "payment": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject",
+            "amend"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "category": "edit",
+            "dates": "edit",
+            "remarks": "edit",
+            "reference": "edit"
+          }
+        }
+      }
+    },
+    {
+      "id": "engineer",
+      "name": "Site Engineer",
+      "stage": "",
+      "permissions": {
+        "work_order": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "hidden",
+            "description": "view",
+            "reason": "view",
+            "contract_package": "view",
+            "retention": "hidden",
+            "unit": "view",
+            "period": "view",
+            "quantity": "view",
+            "purchase_reference": "view"
+          }
+        },
+        "rera_account": {
+          "actions": [],
+          "fields": {
+            "number": "hidden",
+            "bank": "hidden",
+            "ifsc": "hidden",
+            "label": "hidden"
+          }
+        },
+        "vendor": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "name": "view",
+            "trade": "view",
+            "contactName": "view",
+            "phone": "view",
+            "email": "view",
+            "gstin": "hidden",
+            "address": "view"
+          }
+        },
+        "purchase_order": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "hidden",
+            "description": "view",
+            "materials": "view",
+            "order_date": "view"
+          }
+        },
+        "inventory": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "materials": "view",
+            "quantity": "view"
+          }
+        }
+      }
+    },
+    {
+      "id": "admin",
+      "name": "Admin",
+      "stage": "admin",
+      "permissions": {
+        "work_order": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject",
+            "amend"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "reason": "edit",
+            "contract_package": "edit",
+            "retention": "edit",
+            "unit": "edit",
+            "period": "edit",
+            "quantity": "edit",
+            "purchase_reference": "edit"
+          }
+        },
+        "rera_account": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "number": "view",
+            "bank": "view",
+            "ifsc": "view",
+            "label": "view"
+          }
+        },
+        "vendor": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "name": "view",
+            "trade": "view",
+            "contactName": "view",
+            "phone": "view",
+            "email": "view",
+            "gstin": "view",
+            "address": "view"
+          }
+        },
+        "purchase_order": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "materials": "edit",
+            "order_date": "edit"
+          }
+        },
+        "inventory": {
+          "actions": [
+            "view",
+            "create",
+            "edit"
+          ],
+          "fields": {
+            "materials": "edit",
+            "quantity": "edit"
+          }
+        },
+        "expense": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "category": "edit",
+            "dates": "edit",
+            "remarks": "edit",
+            "reference": "edit"
+          }
+        },
+        "payment": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject",
+            "amend"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "category": "edit",
+            "dates": "edit",
+            "remarks": "edit",
+            "reference": "edit"
+          }
+        },
+        "cost_overview": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "view"
+          }
+        },
+        "vendor_onboarding": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit"
+          ],
+          "fields": {
+            "name": "edit",
+            "trade": "edit",
+            "contactName": "edit",
+            "phone": "edit",
+            "email": "edit",
+            "gstin": "edit",
+            "address": "edit",
+            "vendorType": "edit",
+            "pan": "edit",
+            "onboardingStatus": "edit",
+            "notes": "edit"
+          }
+        }
+      }
+    }
+  ],
+  "memberships": [
+    {
+      "tenantId": "t1",
+      "userId": "u2",
+      "roleIds": [
+        "manager"
+      ]
+    },
+    {
+      "tenantId": "t1",
+      "userId": "u3",
+      "roleIds": [
+        "finance"
+      ]
+    },
+    {
+      "tenantId": "t1",
+      "userId": "u4",
+      "roleIds": [
+        "engineer"
+      ]
+    },
+    {
+      "tenantId": "t2",
+      "userId": "u2",
+      "roleIds": [
+        "manager"
+      ]
+    },
+    {
+      "tenantId": "t2",
+      "userId": "u3",
+      "roleIds": [
+        "finance"
+      ]
+    },
+    {
+      "tenantId": "t2",
+      "userId": "u4",
+      "roleIds": [
+        "engineer",
+        "manager"
+      ]
+    }
+  ],
+  "forms": [
+    {
+      "id": "work_order",
+      "name": "Work Order",
+      "version": 1,
+      "fields": [
+        {
+          "key": "contract_package",
+          "label": "Contract package",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "retention",
+          "label": "Retention (%)",
+          "type": "number",
+          "required": false
+        }
+      ],
+      "createdAt": "2026-09-01T08:00:00Z",
+      "createdBy": "u1"
+    },
+    {
+      "id": "vendor",
+      "name": "Vendor Details",
+      "version": 1,
+      "fields": [],
+      "createdBy": "u1",
+      "createdAt": "2026-09-01T08:00:00Z"
+    },
+    {
+      "id": "rera_account",
+      "name": "RERA Bank Account",
+      "version": 1,
+      "fields": [],
+      "createdBy": "u1",
+      "createdAt": "2026-09-01T08:00:00Z"
+    },
+    {
+      "id": "purchase_order",
+      "name": "Purchase Order",
+      "version": 1,
+      "fields": [],
+      "createdBy": "u1",
+      "createdAt": "2026-10-05T08:00:00Z"
+    },
+    {
+      "id": "inventory",
+      "name": "Inventory",
+      "version": 1,
+      "fields": [],
+      "createdBy": "u1",
+      "createdAt": "2026-10-05T08:00:00Z"
+    },
+    {
+      "id": "expense",
+      "name": "Construction Expense",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "payment",
+      "name": "Vendor Payment",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "cost_overview",
+      "name": "Project Cost Overview",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "vendor_onboarding",
+      "name": "Vendor Onboarding",
+      "version": 1,
+      "fields": []
+    }
+  ],
+  "orders": [
+    {
+      "id": "w1",
+      "tenantId": "t1",
+      "number": "WO-SKY-001",
+      "vendor": "Sri Sai Constructions",
+      "description": "Civil & structural works · Tower A",
+      "base": 120000000,
+      "formId": "work_order",
+      "formVersion": 1,
+      "data": {
+        "contract_package": "Civil works",
+        "retention": "5"
+      },
+      "createdBy": "u1",
+      "createdAt": "2026-09-12T09:00:00Z",
+      "vendorId": "v1",
+      "vendorSnapshot": {
+        "id": "v1",
+        "tenantId": "t1",
+        "name": "Sri Sai Constructions",
+        "trade": "Civil works",
+        "contactName": "Srinivas Reddy",
+        "phone": "9000000010",
+        "email": "vendor1@example.com",
+        "gstin": "",
+        "address": "Hyderabad, Telangana",
+        "deleted": false
+      }
+    },
+    {
+      "id": "w2",
+      "tenantId": "t1",
+      "number": "WO-SKY-002",
+      "vendor": "Vertex Electricals",
+      "description": "Electrical installation · Phase I",
+      "base": 48500000,
+      "formId": "work_order",
+      "formVersion": 1,
+      "data": {
+        "contract_package": "Electrical",
+        "retention": "5"
+      },
+      "createdBy": "u1",
+      "createdAt": "2026-09-16T09:00:00Z",
+      "vendorId": "v2",
+      "vendorSnapshot": {
+        "id": "v2",
+        "tenantId": "t1",
+        "name": "Vertex Electricals",
+        "trade": "Electrical",
+        "contactName": "Deepak Nair",
+        "phone": "9000000011",
+        "email": "vendor2@example.com",
+        "gstin": "",
+        "address": "Hyderabad, Telangana",
+        "deleted": false
+      }
+    },
+    {
+      "id": "w3",
+      "tenantId": "t1",
+      "number": "WO-SKY-003",
+      "vendor": "AquaFlow Systems",
+      "description": "Plumbing & fire safety",
+      "base": 32000000,
+      "formId": "work_order",
+      "formVersion": 1,
+      "data": {
+        "contract_package": "MEP",
+        "retention": "3"
+      },
+      "createdBy": "u1",
+      "createdAt": "2026-09-22T09:00:00Z",
+      "vendorId": "v3",
+      "vendorSnapshot": {
+        "id": "v3",
+        "tenantId": "t1",
+        "name": "AquaFlow Systems",
+        "trade": "MEP",
+        "contactName": "Meera Patel",
+        "phone": "9000000012",
+        "email": "vendor3@example.com",
+        "gstin": "",
+        "address": "Hyderabad, Telangana",
+        "deleted": false
+      }
+    },
+    {
+      "id": "w4",
+      "tenantId": "t1",
+      "number": "WO-SKY-004",
+      "vendor": "Stonecraft Interiors",
+      "description": "Flooring & finishes · Tower B",
+      "base": 21000000,
+      "formId": "work_order",
+      "formVersion": 1,
+      "data": {
+        "contract_package": "Interiors",
+        "retention": "5"
+      },
+      "createdBy": "u1",
+      "createdAt": "2026-09-25T09:00:00Z",
+      "vendorId": "v4",
+      "vendorSnapshot": {
+        "id": "v4",
+        "tenantId": "t1",
+        "name": "Stonecraft Interiors",
+        "trade": "Interiors",
+        "contactName": "Arjun Mehta",
+        "phone": "9000000013",
+        "email": "vendor4@example.com",
+        "gstin": "",
+        "address": "Hyderabad, Telangana",
+        "deleted": false
+      }
+    },
+    {
+      "id": "w5",
+      "tenantId": "t2",
+      "number": "WO-NGP-001",
+      "vendor": "Metro Build Contractors",
+      "description": "Commercial structure · Main block",
+      "base": 248000000,
+      "formId": "work_order",
+      "formVersion": 1,
+      "data": {
+        "contract_package": "Civil works",
+        "retention": "5"
+      },
+      "createdBy": "u1",
+      "createdAt": "2026-09-19T09:00:00Z",
+      "vendorId": "v5",
+      "vendorSnapshot": {
+        "id": "v5",
+        "tenantId": "t2",
+        "name": "Metro Build Contractors",
+        "trade": "Civil works",
+        "contactName": "Vikram Rao",
+        "phone": "9000000014",
+        "email": "vendor5@example.com",
+        "gstin": "",
+        "address": "Bengaluru, Karnataka",
+        "deleted": false
+      }
+    }
+  ],
+  "amendments": [
+    {
+      "id": "a1",
+      "orderId": "w1",
+      "delta": 20000000,
+      "reason": "Additional foundation works following soil report",
+      "data": {
+        "contract_package": "Civil works",
+        "retention": "5"
+      },
+      "formVersion": 1,
+      "createdBy": "u1",
+      "createdAt": "2026-09-26T09:00:00Z",
+      "approvalPolicy": 1,
+      "creatorSuperuser": true
+    },
+    {
+      "id": "a2",
+      "orderId": "w2",
+      "delta": 6500000,
+      "reason": "Revised cable routing and additional distribution boards",
+      "data": {
+        "contract_package": "Electrical",
+        "retention": "5"
+      },
+      "formVersion": 1,
+      "createdBy": "u1",
+      "createdAt": "2026-10-03T09:00:00Z",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    },
+    {
+      "id": "a3",
+      "orderId": "w3",
+      "delta": -2000000,
+      "reason": "Scope reduction: external drainage package reassigned",
+      "data": {
+        "contract_package": "MEP",
+        "retention": "3"
+      },
+      "formVersion": 1,
+      "createdBy": "u1",
+      "createdAt": "2026-10-04T09:00:00Z",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    }
+  ],
+  "events": [
+    {
+      "id": "e1",
+      "amendmentId": "a1",
+      "action": "submit",
+      "actorId": "u1",
+      "at": "2026-09-26T10:00:00Z"
+    },
+    {
+      "id": "e2",
+      "amendmentId": "a1",
+      "action": "review",
+      "actorId": "u2",
+      "at": "2026-09-26T11:00:00Z"
+    },
+    {
+      "id": "e3",
+      "amendmentId": "a1",
+      "action": "approve",
+      "stage": "manager",
+      "actorId": "u2",
+      "at": "2026-09-27T09:00:00Z"
+    },
+    {
+      "id": "e4",
+      "amendmentId": "a1",
+      "action": "approve",
+      "stage": "finance",
+      "actorId": "u3",
+      "at": "2026-09-27T10:00:00Z"
+    },
+    {
+      "id": "e5",
+      "amendmentId": "a2",
+      "action": "submit",
+      "actorId": "u1",
+      "at": "2026-10-03T10:00:00Z"
+    },
+    {
+      "id": "e6",
+      "amendmentId": "a2",
+      "action": "review",
+      "actorId": "u2",
+      "at": "2026-10-03T11:00:00Z"
+    },
+    {
+      "id": "e7",
+      "amendmentId": "a2",
+      "action": "approve",
+      "stage": "manager",
+      "actorId": "u2",
+      "at": "2026-10-03T12:00:00Z"
+    },
+    {
+      "id": "e8",
+      "amendmentId": "a3",
+      "action": "submit",
+      "actorId": "u1",
+      "at": "2026-10-04T10:00:00Z"
+    }
+  ],
+  "audit": [
+    {
+      "id": "l1",
+      "tenantId": "t1",
+      "actorId": "u3",
+      "action": "Finance approval recorded",
+      "target": "WO-SKY-001",
+      "at": "2026-09-27T10:00:00Z"
+    },
+    {
+      "id": "l2",
+      "tenantId": "t1",
+      "actorId": "u2",
+      "action": "Manager approval recorded",
+      "target": "WO-SKY-002",
+      "at": "2026-10-03T12:00:00Z"
+    },
+    {
+      "id": "l3",
+      "tenantId": "t1",
+      "actorId": "u1",
+      "action": "Amendment submitted",
+      "target": "WO-SKY-003",
+      "at": "2026-10-04T10:00:00Z"
+    }
+  ],
+  "uploads": [],
+  "vendors": [
+    {
+      "id": "v1",
+      "tenantId": "t1",
+      "name": "Sri Sai Constructions",
+      "trade": "Civil works",
+      "contactName": "Srinivas Reddy",
+      "phone": "9000000010",
+      "email": "vendor1@example.com",
+      "gstin": "",
+      "address": "Hyderabad, Telangana",
+      "deleted": false,
+      "onboardingStatus": "Active",
+      "vendorType": "Subcontractor",
+      "pan": "",
+      "notes": ""
+    },
+    {
+      "id": "v2",
+      "tenantId": "t1",
+      "name": "Vertex Electricals",
+      "trade": "Electrical",
+      "contactName": "Deepak Nair",
+      "phone": "9000000011",
+      "email": "vendor2@example.com",
+      "gstin": "",
+      "address": "Hyderabad, Telangana",
+      "deleted": false,
+      "onboardingStatus": "Active",
+      "vendorType": "Subcontractor",
+      "pan": "",
+      "notes": ""
+    },
+    {
+      "id": "v3",
+      "tenantId": "t1",
+      "name": "AquaFlow Systems",
+      "trade": "MEP",
+      "contactName": "Meera Patel",
+      "phone": "9000000012",
+      "email": "vendor3@example.com",
+      "gstin": "",
+      "address": "Hyderabad, Telangana",
+      "deleted": false,
+      "onboardingStatus": "Active",
+      "vendorType": "Subcontractor",
+      "pan": "",
+      "notes": ""
+    },
+    {
+      "id": "v4",
+      "tenantId": "t1",
+      "name": "Stonecraft Interiors",
+      "trade": "Interiors",
+      "contactName": "Arjun Mehta",
+      "phone": "9000000013",
+      "email": "vendor4@example.com",
+      "gstin": "",
+      "address": "Hyderabad, Telangana",
+      "deleted": false,
+      "onboardingStatus": "Active",
+      "vendorType": "Subcontractor",
+      "pan": "",
+      "notes": ""
+    },
+    {
+      "id": "v5",
+      "tenantId": "t2",
+      "name": "Metro Build Contractors",
+      "trade": "Civil works",
+      "contactName": "Vikram Rao",
+      "phone": "9000000014",
+      "email": "vendor5@example.com",
+      "gstin": "",
+      "address": "Bengaluru, Karnataka",
+      "deleted": false,
+      "onboardingStatus": "Active",
+      "vendorType": "Subcontractor",
+      "pan": "",
+      "notes": ""
+    },
+    {
+      "id": "v6",
+      "tenantId": "t2",
+      "name": "Sri Sai Constructions",
+      "trade": "Civil works",
+      "contactName": "Srinivas Reddy",
+      "phone": "9000000010",
+      "email": "vendor1@example.com",
+      "gstin": "",
+      "address": "Bengaluru project office",
+      "deleted": false,
+      "onboardingStatus": "Active",
+      "vendorType": "Subcontractor",
+      "pan": "",
+      "notes": ""
+    },
+    {
+      "id": "v7",
+      "tenantId": "t1",
+      "name": "Aster Structural Consultants",
+      "trade": "Structural consultancy",
+      "vendorType": "Consultant",
+      "contactName": "Neha Menon",
+      "phone": "9876543210",
+      "email": "neha@example.com",
+      "address": "Hyderabad",
+      "gstin": "",
+      "pan": "",
+      "notes": "Design consultancy for Tower A",
+      "onboardingStatus": "Submitted",
+      "createdBy": "u1",
+      "createdAt": "2026-10-04T10:00:00Z",
+      "deleted": false
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "id": "po1",
+      "tenantId": "t1",
+      "number": "PO-SKY-001",
+      "description": "Tower A slab materials and equipment hire",
+      "vendorId": "v1",
+      "vendor": "Sri Sai Constructions",
+      "vendorSnapshot": {
+        "id": "v1",
+        "tenantId": "t1",
+        "name": "Sri Sai Constructions",
+        "trade": "Civil works",
+        "contactName": "Srinivas Reddy",
+        "phone": "9000000010",
+        "email": "vendor1@example.com",
+        "gstin": "",
+        "address": "Hyderabad, Telangana",
+        "deleted": false
+      },
+      "lines": [
+        {
+          "id": "pl1",
+          "kind": "purchase",
+          "material": "TMT steel · Fe500",
+          "unit": "tonne",
+          "quantityMilli": 2000,
+          "rate": 6500000,
+          "total": 13000000
+        },
+        {
+          "id": "pl2",
+          "kind": "rental",
+          "material": "Concrete mixer hire",
+          "unit": "day",
+          "quantityMilli": 10000,
+          "rate": 350000,
+          "total": 3500000
+        }
+      ],
+      "total": 16500000,
+      "formVersion": 1,
+      "data": {},
+      "createdBy": "u1",
+      "createdAt": "2026-10-05T08:00:00Z",
+      "orderDate": "2026-10-05",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    }
+  ],
+  "purchaseEvents": [],
+  "stockLots": [],
+  "stockMovements": [],
+  "expenses": [
+    {
+      "id": "ex1",
+      "kind": "expense",
+      "tenantId": "t1",
+      "description": "Structural design consultancy · September",
+      "category": "Consultant charges",
+      "payee": "Aster Structural Consultants",
+      "expenseDate": "2026-10-01",
+      "amount": 6400000,
+      "remarks": "Monthly retainer",
+      "referenceType": "",
+      "referenceId": "",
+      "formVersion": 1,
+      "data": {},
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T10:00:00Z",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    },
+    {
+      "id": "ex2",
+      "kind": "expense",
+      "tenantId": "t1",
+      "description": "Site office salaries · September",
+      "category": "Salaries",
+      "payee": "Site payroll",
+      "expenseDate": "2026-10-02",
+      "amount": 4800000,
+      "remarks": "Awaiting superuser approval",
+      "referenceType": "",
+      "referenceId": "",
+      "formVersion": 1,
+      "data": {},
+      "createdBy": "u2",
+      "createdAt": "2026-10-02T10:00:00Z",
+      "approvalPolicy": 2,
+      "creatorSuperuser": false
+    },
+    {
+      "id": "ex3",
+      "kind": "expense",
+      "tenantId": "t1",
+      "description": "Site office administration",
+      "category": "Admin costs",
+      "payee": "Site office",
+      "expenseDate": "2026-10-04",
+      "amount": 1200000,
+      "remarks": "",
+      "referenceType": "",
+      "referenceId": "",
+      "formVersion": 1,
+      "data": {},
+      "createdBy": "u1",
+      "createdAt": "2026-10-04T10:00:00Z",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    }
+  ],
+  "invoices": [
+    {
+      "id": "inv1",
+      "tenantId": "t1",
+      "orderId": "w1",
+      "orderNumber": "WO-SKY-001",
+      "orderDate": "2026-09-12",
+      "vendorId": "v1",
+      "vendor": "Sri Sai Constructions",
+      "invoiceNumber": "SSC-2026-041",
+      "invoiceDate": "2026-10-01",
+      "amount": 10000000,
+      "description": "Tower A civil works · first running bill",
+      "category": "Civil works",
+      "remarks": "Partial settlement",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T11:00:00Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "pay1",
+      "kind": "payment",
+      "tenantId": "t1",
+      "invoiceId": "inv1",
+      "paid": 4500000,
+      "tds": 500000,
+      "amount": 5000000,
+      "paidDate": "2026-10-04",
+      "remarks": "First partial payment",
+      "formVersion": 1,
+      "data": {},
+      "createdBy": "u1",
+      "createdAt": "2026-10-04T11:00:00Z",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    }
+  ],
+  "financeEvents": [
+    {
+      "id": "fe1",
+      "documentId": "ex1",
+      "action": "submit",
+      "actorId": "u1",
+      "stage": "",
+      "at": "2026-10-01T12:00:00Z"
+    },
+    {
+      "id": "fe2",
+      "documentId": "ex1",
+      "action": "approve",
+      "actorId": "u1",
+      "stage": "superuser",
+      "at": "2026-10-01T12:10:00Z"
+    },
+    {
+      "id": "fe3",
+      "documentId": "ex2",
+      "action": "submit",
+      "actorId": "u2",
+      "stage": "",
+      "at": "2026-10-02T12:00:00Z"
+    },
+    {
+      "id": "fe4",
+      "documentId": "ex2",
+      "action": "review",
+      "actorId": "u3",
+      "stage": "",
+      "at": "2026-10-02T12:10:00Z"
+    },
+    {
+      "id": "fe5",
+      "documentId": "ex2",
+      "action": "approve",
+      "actorId": "u3",
+      "stage": "finance",
+      "at": "2026-10-02T12:20:00Z"
+    }
+  ],
+  "invoiceEvents": []
+}

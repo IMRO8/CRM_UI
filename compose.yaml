@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: buildledger
+      POSTGRES_USER: ledger_migrator
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U ledger_migrator -d buildledger]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  migrate:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: [migrate]
+    environment:
+      MIGRATION_DATABASE_URL: postgres://ledger_migrator:${POSTGRES_PASSWORD}@db:5432/buildledger?sslmode=disable
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgres://ledger_app:${APP_DB_PASSWORD}@db:5432/buildledger?sslmode=disable
+      COOKIE_SECURE: "false"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+  web:
+    build: .
+    ports:
+      - "8088:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+volumes:
+  postgres_data:
