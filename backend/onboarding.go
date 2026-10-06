@@ -54,6 +54,15 @@ func onboardingRecord(s State, u M, t string, d M) (M, error) {
 			return nil, errors.New("Tax reference has invalid format")
 		}
 	}
+	if str(m, "gstin") == "" && str(m, "pan") == "" {
+		return nil, errors.New("PAN or GSTIN is required")
+	}
+	data, version, e := financialExtras(s, u, t, d, "vendor_onboarding", old)
+	if e != nil {
+		return nil, e
+	}
+	m["data"] = data
+	m["formVersion"] = version
 	return m, nil
 }
 func manageOnboarding(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {

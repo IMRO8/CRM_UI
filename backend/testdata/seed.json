@@ -98,7 +98,9 @@
             "unit": "edit",
             "period": "edit",
             "quantity": "edit",
-            "purchase_reference": "edit"
+            "purchase_reference": "edit",
+            "quotation": "edit",
+            "contract": "edit"
           }
         },
         "rera_account": {
@@ -140,7 +142,9 @@
             "amount": "edit",
             "description": "edit",
             "materials": "edit",
-            "order_date": "edit"
+            "order_date": "edit",
+            "reference": "edit",
+            "purpose": "edit"
           }
         },
         "inventory": {
@@ -191,6 +195,211 @@
             "dates": "edit",
             "remarks": "edit",
             "reference": "edit"
+          }
+        },
+        "quotation_request": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "description": "edit",
+            "reference": "edit"
+          }
+        },
+        "vendor_quotation": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "vendor": "edit",
+            "terms": "edit"
+          }
+        },
+        "quotation_selection": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "reference": "edit",
+            "reason": "edit",
+            "amount": "edit"
+          }
+        },
+        "vendor_feedback": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "vendor": "edit",
+            "reference": "edit",
+            "ratings": "edit",
+            "comments": "edit",
+            "dates": "edit"
+          }
+        },
+        "project_plan": {
+          "actions": [],
+          "fields": {
+            "amount": "view",
+            "targets": "view",
+            "dates": "view"
+          }
+        },
+        "progress": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "reference": "edit",
+            "progress": "edit",
+            "dates": "edit",
+            "comments": "edit"
+          }
+        },
+        "sale": {
+          "actions": [],
+          "fields": {
+            "amount": "view",
+            "customer": "view",
+            "unit": "view",
+            "status": "view",
+            "dates": "view"
+          }
+        },
+        "collection": {
+          "actions": [],
+          "fields": {
+            "amount": "view",
+            "reference": "view",
+            "dates": "view",
+            "remarks": "view"
+          }
+        },
+        "dashboard": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "progress": "view",
+            "cash": "hidden",
+            "sales": "hidden",
+            "budget": "hidden"
+          }
+        },
+        "vendor_reporting": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "hidden",
+            "ratings": "view",
+            "reference": "view"
+          }
+        },
+        "corporate_account": {
+          "actions": [],
+          "fields": {
+            "details": "hidden"
+          }
+        },
+        "corporate_payment": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "booking": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "schedule_template": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "details": "view"
+          }
+        },
+        "payment_schedule": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "hidden",
+            "reference": "view",
+            "details": "view",
+            "dates": "view"
+          }
+        },
+        "milestone": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "demand": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "receipt_allocation": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden"
           }
         }
       }
@@ -220,7 +429,9 @@
             "unit": "edit",
             "period": "edit",
             "quantity": "edit",
-            "purchase_reference": "edit"
+            "purchase_reference": "edit",
+            "quotation": "edit",
+            "contract": "edit"
           }
         },
         "rera_account": {
@@ -262,7 +473,9 @@
             "amount": "edit",
             "description": "edit",
             "materials": "edit",
-            "order_date": "edit"
+            "order_date": "edit",
+            "reference": "edit",
+            "purpose": "edit"
           }
         },
         "inventory": {
@@ -314,6 +527,255 @@
             "remarks": "edit",
             "reference": "edit"
           }
+        },
+        "quotation_request": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "description": "edit",
+            "reference": "edit"
+          }
+        },
+        "vendor_quotation": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "vendor": "edit",
+            "terms": "edit"
+          }
+        },
+        "quotation_selection": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "reference": "edit",
+            "reason": "edit",
+            "amount": "edit"
+          }
+        },
+        "vendor_feedback": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "vendor": "view",
+            "reference": "view",
+            "ratings": "view",
+            "comments": "view",
+            "dates": "view"
+          }
+        },
+        "project_plan": {
+          "actions": [],
+          "fields": {
+            "amount": "view",
+            "targets": "view",
+            "dates": "view"
+          }
+        },
+        "progress": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "reference": "view",
+            "progress": "view",
+            "dates": "view",
+            "comments": "view"
+          }
+        },
+        "sale": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "customer": "edit",
+            "unit": "edit",
+            "status": "edit",
+            "dates": "edit"
+          }
+        },
+        "collection": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "dates": "edit",
+            "remarks": "edit"
+          }
+        },
+        "dashboard": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "progress": "view",
+            "cash": "view",
+            "sales": "view",
+            "budget": "hidden"
+          }
+        },
+        "vendor_reporting": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "view",
+            "ratings": "view",
+            "reference": "view"
+          }
+        },
+        "corporate_account": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "details": "view"
+          }
+        },
+        "corporate_payment": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "booking": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "schedule_template": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "details": "view"
+          }
+        },
+        "payment_schedule": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "milestone": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "demand": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "receipt_allocation": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit"
+          }
         }
       }
     },
@@ -335,7 +797,9 @@
             "unit": "view",
             "period": "view",
             "quantity": "view",
-            "purchase_reference": "view"
+            "purchase_reference": "view",
+            "quotation": "view",
+            "contract": "hidden"
           }
         },
         "rera_account": {
@@ -369,7 +833,9 @@
             "amount": "hidden",
             "description": "view",
             "materials": "view",
-            "order_date": "view"
+            "order_date": "view",
+            "reference": "view",
+            "purpose": "view"
           }
         },
         "inventory": {
@@ -379,6 +845,163 @@
           "fields": {
             "materials": "view",
             "quantity": "view"
+          }
+        },
+        "quotation_request": {
+          "actions": [],
+          "fields": {
+            "description": "view",
+            "reference": "view"
+          }
+        },
+        "vendor_quotation": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "description": "view",
+            "vendor": "view",
+            "terms": "view"
+          }
+        },
+        "quotation_selection": {
+          "actions": [],
+          "fields": {
+            "reference": "view",
+            "reason": "view",
+            "amount": "hidden"
+          }
+        },
+        "vendor_feedback": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "vendor": "view",
+            "reference": "view",
+            "ratings": "view",
+            "comments": "view",
+            "dates": "view"
+          }
+        },
+        "project_plan": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "targets": "view",
+            "dates": "view"
+          }
+        },
+        "progress": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "reference": "view",
+            "progress": "view",
+            "dates": "view",
+            "comments": "view"
+          }
+        },
+        "sale": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "customer": "view",
+            "unit": "view",
+            "status": "view",
+            "dates": "view"
+          }
+        },
+        "collection": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "view",
+            "dates": "view",
+            "remarks": "view"
+          }
+        },
+        "dashboard": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "progress": "view",
+            "cash": "hidden",
+            "sales": "hidden",
+            "budget": "hidden"
+          }
+        },
+        "vendor_reporting": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "hidden",
+            "ratings": "view",
+            "reference": "view"
+          }
+        },
+        "corporate_account": {
+          "actions": [],
+          "fields": {
+            "details": "hidden"
+          }
+        },
+        "corporate_payment": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "booking": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "schedule_template": {
+          "actions": [],
+          "fields": {
+            "details": "hidden"
+          }
+        },
+        "payment_schedule": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "milestone": {
+          "actions": [],
+          "fields": {
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "demand": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden",
+            "details": "hidden",
+            "dates": "hidden"
+          }
+        },
+        "receipt_allocation": {
+          "actions": [],
+          "fields": {
+            "amount": "hidden",
+            "reference": "hidden"
           }
         }
       }
@@ -408,7 +1031,9 @@
             "unit": "edit",
             "period": "edit",
             "quantity": "edit",
-            "purchase_reference": "edit"
+            "purchase_reference": "edit",
+            "quotation": "edit",
+            "contract": "edit"
           }
         },
         "rera_account": {
@@ -450,7 +1075,9 @@
             "amount": "edit",
             "description": "edit",
             "materials": "edit",
-            "order_date": "edit"
+            "order_date": "edit",
+            "reference": "edit",
+            "purpose": "edit"
           }
         },
         "inventory": {
@@ -530,6 +1157,275 @@
             "pan": "edit",
             "onboardingStatus": "edit",
             "notes": "edit"
+          }
+        },
+        "quotation_request": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "description": "edit",
+            "reference": "edit"
+          }
+        },
+        "vendor_quotation": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "description": "edit",
+            "vendor": "edit",
+            "terms": "edit"
+          }
+        },
+        "quotation_selection": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "reference": "edit",
+            "reason": "edit",
+            "amount": "edit"
+          }
+        },
+        "vendor_feedback": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "vendor": "edit",
+            "reference": "edit",
+            "ratings": "edit",
+            "comments": "edit",
+            "dates": "edit"
+          }
+        },
+        "project_plan": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "targets": "edit",
+            "dates": "edit"
+          }
+        },
+        "progress": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "reference": "edit",
+            "progress": "edit",
+            "dates": "edit",
+            "comments": "edit"
+          }
+        },
+        "sale": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "customer": "edit",
+            "unit": "edit",
+            "status": "edit",
+            "dates": "edit"
+          }
+        },
+        "collection": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "dates": "edit",
+            "remarks": "edit"
+          }
+        },
+        "dashboard": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "progress": "view",
+            "cash": "view",
+            "sales": "view",
+            "budget": "view"
+          }
+        },
+        "vendor_reporting": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "amount": "view",
+            "ratings": "view",
+            "reference": "view"
+          }
+        },
+        "corporate_account": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "details": "view"
+          }
+        },
+        "corporate_payment": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "booking": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "schedule_template": {
+          "actions": [
+            "view"
+          ],
+          "fields": {
+            "details": "view"
+          }
+        },
+        "payment_schedule": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "milestone": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "demand": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit",
+            "details": "edit",
+            "dates": "edit"
+          }
+        },
+        "receipt_allocation": {
+          "actions": [
+            "view",
+            "create",
+            "edit",
+            "submit",
+            "review",
+            "approve",
+            "reject"
+          ],
+          "fields": {
+            "amount": "edit",
+            "reference": "edit"
           }
         }
       }
@@ -655,6 +1551,120 @@
     {
       "id": "vendor_onboarding",
       "name": "Vendor Onboarding",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "project",
+      "name": "Project",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "quotation_request",
+      "name": "Quotation Work Package",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "vendor_quotation",
+      "name": "Vendor Quotation",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "quotation_selection",
+      "name": "Quotation Selection",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "vendor_feedback",
+      "name": "Vendor Feedback",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "project_plan",
+      "name": "Project Budget & Targets",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "progress",
+      "name": "Work Progress",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "sale",
+      "name": "Unit Sales",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "collection",
+      "name": "Cash Collections",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "dashboard",
+      "name": "CRM Dashboard",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "vendor_reporting",
+      "name": "Vendor Reporting",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "corporate_account",
+      "name": "Corporate accounts",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "corporate_payment",
+      "name": "Salary & admin payments",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "booking",
+      "name": "CRM booking profile",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "schedule_template",
+      "name": "Payment schedule template",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "payment_schedule",
+      "name": "Unit payment schedule",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "milestone",
+      "name": "Construction milestones",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "demand",
+      "name": "Payment demand",
+      "version": 1,
+      "fields": []
+    },
+    {
+      "id": "receipt_allocation",
+      "name": "Receipt allocations",
       "version": 1,
       "fields": []
     }
@@ -1049,7 +2059,7 @@
       "email": "neha@example.com",
       "address": "Hyderabad",
       "gstin": "",
-      "pan": "",
+      "pan": "ABCDE1234F",
       "notes": "Design consultancy for Tower A",
       "onboardingStatus": "Submitted",
       "createdBy": "u1",
@@ -1085,7 +2095,8 @@
           "unit": "tonne",
           "quantityMilli": 2000,
           "rate": 6500000,
-          "total": 13000000
+          "total": 13000000,
+          "purpose": "Slab reinforcement for Tower A"
         },
         {
           "id": "pl2",
@@ -1094,7 +2105,8 @@
           "unit": "day",
           "quantityMilli": 10000,
           "rate": 350000,
-          "total": 3500000
+          "total": 3500000,
+          "purpose": "Concrete placement for Tower A slabs"
         }
       ],
       "total": 16500000,
@@ -1104,7 +2116,10 @@
       "createdAt": "2026-10-05T08:00:00Z",
       "orderDate": "2026-10-05",
       "approvalPolicy": 2,
-      "creatorSuperuser": true
+      "creatorSuperuser": true,
+      "orderId": "w1",
+      "orderNumber": "WO-SKY-001",
+      "purpose": "TMT steel for Tower A slab reinforcement; mixer for concrete placement."
     }
   ],
   "purchaseEvents": [],
@@ -1249,5 +2264,857 @@
       "at": "2026-10-02T12:20:00Z"
     }
   ],
-  "invoiceEvents": []
+  "invoiceEvents": [],
+  "suiteRecords": [
+    {
+      "id": "rfq1",
+      "kind": "rfq",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "title": "Tower B plastering package",
+      "description": "Internal plastering for Tower B, floors 1–5",
+      "contractType": "Labour",
+      "referenceOrderId": "w4"
+    },
+    {
+      "id": "quote1",
+      "kind": "quotation",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "rfqId": "rfq1",
+      "vendorId": "v1",
+      "vendor": "Sri Sai Constructions",
+      "number": "QT-SKY-001",
+      "quotationDate": "2026-10-01",
+      "amount": 9000000,
+      "deliveryDays": 35,
+      "creditDays": 30,
+      "description": "Internal plastering · Tower B",
+      "terms": "Payment against measured work; rates include tax."
+    },
+    {
+      "id": "quote2",
+      "kind": "quotation",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "rfqId": "rfq1",
+      "vendorId": "v4",
+      "vendor": "Stonecraft Interiors",
+      "number": "QT-SKY-002",
+      "quotationDate": "2026-10-01",
+      "amount": 9800000,
+      "deliveryDays": 28,
+      "creditDays": 45,
+      "description": "Internal plastering · Tower B",
+      "terms": "Payment against measured work; rates include tax."
+    },
+    {
+      "id": "quote3",
+      "kind": "quotation",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "rfqId": "rfq1",
+      "vendorId": "v3",
+      "vendor": "AquaFlow Systems",
+      "number": "QT-SKY-003",
+      "quotationDate": "2026-10-01",
+      "amount": 8500000,
+      "deliveryDays": 45,
+      "creditDays": 15,
+      "description": "Internal plastering · Tower B",
+      "terms": "Payment against measured work; rates include tax."
+    },
+    {
+      "id": "award1",
+      "kind": "award",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "rfqId": "rfq1",
+      "quotationId": "quote1",
+      "amount": 9000000,
+      "reason": "Competitive value and deeper relevant experience; selected over the faster bidder.",
+      "approvalPolicy": 2,
+      "creatorSuperuser": true
+    },
+    {
+      "id": "plan1",
+      "kind": "project_plan",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "budget": 300000000,
+      "salesTarget": 1200000000,
+      "unitTarget": 20,
+      "startDate": "2026-09-01",
+      "endDate": "2027-06-30",
+      "monthlyTargets": [
+        {
+          "month": "2026-09",
+          "cash": 80000000,
+          "progress": 22
+        },
+        {
+          "month": "2026-10",
+          "cash": 120000000,
+          "progress": 45
+        },
+        {
+          "month": "2026-11",
+          "cash": 160000000,
+          "progress": 60
+        }
+      ]
+    },
+    {
+      "id": "progress-sep1",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-09-30T08:00:00Z",
+      "updatedAt": "2026-09-30T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w1",
+      "percent": 22,
+      "date": "2026-09-30",
+      "comments": "September site measurements · illustrative sample"
+    },
+    {
+      "id": "progress-sep2",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-09-30T08:00:00Z",
+      "updatedAt": "2026-09-30T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w2",
+      "percent": 16,
+      "date": "2026-09-30",
+      "comments": "September site measurements · illustrative sample"
+    },
+    {
+      "id": "progress-sep3",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-09-30T08:00:00Z",
+      "updatedAt": "2026-09-30T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w3",
+      "percent": 12,
+      "date": "2026-09-30",
+      "comments": "September site measurements · illustrative sample"
+    },
+    {
+      "id": "progress-sep4",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-09-30T08:00:00Z",
+      "updatedAt": "2026-09-30T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w4",
+      "percent": 5,
+      "date": "2026-09-30",
+      "comments": "September site measurements · illustrative sample"
+    },
+    {
+      "id": "progress1",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w1",
+      "percent": 48,
+      "date": "2026-10-06",
+      "comments": "Site-measured completion · illustrative sample"
+    },
+    {
+      "id": "progress2",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w2",
+      "percent": 32,
+      "date": "2026-10-06",
+      "comments": "Site-measured completion · illustrative sample"
+    },
+    {
+      "id": "progress3",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w3",
+      "percent": 28,
+      "date": "2026-10-06",
+      "comments": "Site-measured completion · illustrative sample"
+    },
+    {
+      "id": "progress4",
+      "kind": "progress",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "orderId": "w4",
+      "percent": 15,
+      "date": "2026-10-06",
+      "comments": "Site-measured completion · illustrative sample"
+    },
+    {
+      "id": "sale1",
+      "kind": "sale",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "unit": "A-101",
+      "customer": "Priya Sharma",
+      "status": "Booked",
+      "amount": 650000000,
+      "date": "2026-09-10"
+    },
+    {
+      "id": "sale2",
+      "kind": "sale",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "unit": "A-102",
+      "customer": "Arun Mehta",
+      "status": "Booked",
+      "amount": 700000000,
+      "date": "2026-09-18"
+    },
+    {
+      "id": "sale3",
+      "kind": "sale",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "unit": "B-201",
+      "customer": "Neha Rao",
+      "status": "Reserved",
+      "amount": 720000000,
+      "date": "2026-10-02"
+    },
+    {
+      "id": "sale4",
+      "kind": "sale",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "unit": "B-202",
+      "customer": "Sanjay Patel",
+      "status": "Lead",
+      "amount": 680000000,
+      "date": "2026-10-05"
+    },
+    {
+      "id": "cash1",
+      "kind": "collection",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "saleId": "sale1",
+      "amount": 30000000,
+      "date": "2026-09-20",
+      "reference": "RCPT-SKY-001",
+      "remarks": "Booked-unit collection · sample"
+    },
+    {
+      "id": "cash2",
+      "kind": "collection",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "saleId": "sale2",
+      "amount": 20000000,
+      "date": "2026-09-25",
+      "reference": "RCPT-SKY-002",
+      "remarks": "Booked-unit collection · sample"
+    },
+    {
+      "id": "cash3",
+      "kind": "collection",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "saleId": "sale1",
+      "amount": 40000000,
+      "date": "2026-10-04",
+      "reference": "RCPT-SKY-003",
+      "remarks": "Booked-unit collection · sample"
+    },
+    {
+      "id": "cash4",
+      "kind": "collection",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "saleId": "sale2",
+      "amount": 25000000,
+      "date": "2026-10-06",
+      "reference": "RCPT-SKY-004",
+      "remarks": "Booked-unit collection · sample"
+    },
+    {
+      "id": "feedback1",
+      "kind": "vendor_feedback",
+      "tenantId": "t1",
+      "createdBy": "u1",
+      "createdAt": "2026-10-01T08:00:00Z",
+      "updatedAt": "2026-10-01T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "vendorId": "v1",
+      "vendor": "Sri Sai Constructions",
+      "orderId": "w1",
+      "quality": 4,
+      "timeliness": 4,
+      "safety": 5,
+      "communication": 4,
+      "date": "2026-10-05",
+      "comments": "Good structural quality; improve advance coordination of deliveries."
+    }
+  ],
+  "suiteEvents": [
+    {
+      "id": "se1",
+      "documentId": "award1",
+      "action": "submit",
+      "stage": "",
+      "actorId": "u1",
+      "at": "2026-10-01T09:00:00Z"
+    },
+    {
+      "id": "se2",
+      "documentId": "award1",
+      "action": "approve",
+      "stage": "superuser",
+      "actorId": "u1",
+      "at": "2026-10-01T10:00:00Z"
+    }
+  ],
+  "orderEvents": [],
+  "attachments": [],
+  "extensions": [
+    {
+      "id": "schedule-reference",
+      "kind": "schedule_template",
+      "tenantId": "t1",
+      "name": "Reference · Part A + possession",
+      "version": 1,
+      "rows": [
+        {
+          "code": "booking",
+          "label": "Booking",
+          "percent": 5,
+          "trigger": "booking",
+          "delayDays": 0
+        },
+        {
+          "code": "agreement",
+          "label": "Agreement",
+          "percent": 15,
+          "trigger": "booking",
+          "delayDays": 5
+        },
+        {
+          "code": "excavation",
+          "label": "Excavation completion",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "footing",
+          "label": "Footing completion",
+          "percent": 6,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "ground",
+          "label": "Ground floor slab",
+          "percent": 6,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "parking",
+          "label": "Parking slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_3",
+          "label": "Floor 3 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_6",
+          "label": "Floor 6 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_9",
+          "label": "Floor 9 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_12",
+          "label": "Floor 12 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_15",
+          "label": "Floor 15 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_18",
+          "label": "Floor 18 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_21",
+          "label": "Floor 21 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "slab_24",
+          "label": "Floor 24 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "superstructure",
+          "label": "Superstructure completion",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "flooring",
+          "label": "Flooring & painting",
+          "percent": 4,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "electrical",
+          "label": "Electrical & plumbing",
+          "percent": 4,
+          "trigger": "milestone",
+          "delayDays": 15
+        },
+        {
+          "code": "registration",
+          "label": "Registration",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 0
+        }
+      ],
+      "createdBy": "u1",
+      "createdAt": "2026-10-06T14:16:26.373Z",
+      "formVersion": 1,
+      "data": {}
+    },
+    {
+      "id": "booking-sample",
+      "kind": "booking",
+      "tenantId": "t1",
+      "saleId": "sale1",
+      "unit": "A-101",
+      "wing": "A",
+      "bookingDate": "2026-09-10",
+      "createdBy": "u1",
+      "createdAt": "2026-09-10T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "amount": 650000000,
+      "details": {
+        "enquiryNumber": "ENQ-SAMPLE-01",
+        "leadId": "LEAD-SAMPLE-01",
+        "facing": "East",
+        "floor": "1",
+        "unitType": "3 BHK",
+        "areaSqft": "1800",
+        "source": "Referral",
+        "occupation": "Professional",
+        "company": "Sample company",
+        "designation": "Architect",
+        "salesPerson": "Sample sales coordinator",
+        "relationshipManager": "Sample CRM manager",
+        "applicant": {
+          "title": "Ms",
+          "fullName": "Priya Sharma",
+          "phone": "9000000001",
+          "email": "buyer@example.com",
+          "residentialAddress": "Sample address"
+        },
+        "coApplicant": {},
+        "bookingPayments": [
+          {
+            "mode": "NEFT",
+            "reference": "RCPT-SKY-001",
+            "bank": "Sample bank",
+            "amount": "300000",
+            "date": "2026-09-20"
+          }
+        ]
+      },
+      "pricing": {
+        "gstBps": 500,
+        "tdsBps": 100,
+        "partA": [
+          {
+            "label": "Agreed sale consideration",
+            "amount": 619047619
+          }
+        ],
+        "partB": [
+          {
+            "label": "Possession charges included / not separately quoted",
+            "amount": 0,
+            "gstBps": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "schedule-sample",
+      "kind": "payment_schedule",
+      "tenantId": "t1",
+      "bookingId": "booking-sample",
+      "saleId": "sale1",
+      "unit": "A-101",
+      "wing": "A",
+      "bookingDate": "2026-09-10",
+      "templateId": "schedule-reference",
+      "templateVersion": 1,
+      "createdBy": "u1",
+      "createdAt": "2026-09-10T08:00:00Z",
+      "formVersion": 1,
+      "data": {},
+      "rows": [
+        {
+          "code": "booking",
+          "label": "Booking",
+          "percent": 5,
+          "trigger": "booking",
+          "delayDays": 0,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "agreement",
+          "label": "Agreement",
+          "percent": 15,
+          "trigger": "booking",
+          "delayDays": 5,
+          "base": 92857143,
+          "gst": 4642857,
+          "tds": 928571,
+          "gross": 97500000,
+          "net": 96571429
+        },
+        {
+          "code": "excavation",
+          "label": "Excavation completion",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "footing",
+          "label": "Footing completion",
+          "percent": 6,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 37142857,
+          "gst": 1857143,
+          "tds": 371429,
+          "gross": 39000000,
+          "net": 38628571
+        },
+        {
+          "code": "ground",
+          "label": "Ground floor slab",
+          "percent": 6,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 37142857,
+          "gst": 1857143,
+          "tds": 371428,
+          "gross": 39000000,
+          "net": 38628572
+        },
+        {
+          "code": "parking",
+          "label": "Parking slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_3",
+          "label": "Floor 3 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_6",
+          "label": "Floor 6 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_9",
+          "label": "Floor 9 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309523,
+          "gross": 32500000,
+          "net": 32190477
+        },
+        {
+          "code": "slab_12",
+          "label": "Floor 12 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_15",
+          "label": "Floor 15 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_18",
+          "label": "Floor 18 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_21",
+          "label": "Floor 21 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "slab_24",
+          "label": "Floor 24 slab",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309523,
+          "gross": 32500000,
+          "net": 32190477
+        },
+        {
+          "code": "superstructure",
+          "label": "Superstructure completion",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "flooring",
+          "label": "Flooring & painting",
+          "percent": 4,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 24761904,
+          "gst": 1238096,
+          "tds": 247619,
+          "gross": 26000000,
+          "net": 25752381
+        },
+        {
+          "code": "electrical",
+          "label": "Electrical & plumbing",
+          "percent": 4,
+          "trigger": "milestone",
+          "delayDays": 15,
+          "base": 24761905,
+          "gst": 1238095,
+          "tds": 247619,
+          "gross": 26000000,
+          "net": 25752381
+        },
+        {
+          "code": "registration",
+          "label": "Registration",
+          "percent": 5,
+          "trigger": "milestone",
+          "delayDays": 0,
+          "base": 30952381,
+          "gst": 1547619,
+          "tds": 309524,
+          "gross": 32500000,
+          "net": 32190476
+        },
+        {
+          "code": "possession",
+          "label": "Part B · possession charges",
+          "trigger": "milestone",
+          "delayDays": 0,
+          "percent": null,
+          "base": 0,
+          "gst": 0,
+          "tds": 0,
+          "gross": 0,
+          "net": 0
+        }
+      ],
+      "totals": {
+        "base": 619047619,
+        "gst": 30952381,
+        "tds": 6190476,
+        "partB": 0,
+        "grandTotal": 650000000
+      }
+    }
+  ],
+  "extensionEvents": []
 }

@@ -93,7 +93,7 @@ func TestOnboardingValuesAndPermissions(t *testing.T) {
 	s := fixture(t)
 	su := find(s["users"], "u1")
 	u := find(s["users"], "u2")
-	d := M{"name": "Specialist", "trade": "Custom trade", "vendorType": "Custom type", "contactName": "Contact", "phone": "+91 98765 43210", "email": "contact@example.com", "address": "Site office"}
+	d := M{"name": "Specialist", "trade": "Custom trade", "vendorType": "Custom type", "contactName": "Contact", "phone": "+91 98765 43210", "email": "contact@example.com", "address": "Site office", "pan": "ABCDE1234F"}
 	v, e := onboardingRecord(s, su, "t1", d)
 	if e != nil || str(v, "trade") != "Custom trade" {
 		t.Fatal(v, e)

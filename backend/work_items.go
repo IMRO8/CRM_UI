@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var workOrderFields = []string{"amount", "description", "reason", "unit", "period", "quantity", "purchase_reference"}
+var workOrderFields = []string{"amount", "description", "reason", "unit", "period", "quantity", "purchase_reference", "quotation", "contract"}
 
 func workRecordDetails(s State, u M, t string, d M) (M, error) {
 	details := M{}
@@ -49,7 +49,11 @@ func workRecordDetails(s State, u M, t string, d M) (M, error) {
 			if total > 100000000000000 {
 				return nil, errors.New("Work-order total exceeds the supported range")
 			}
-			items = append(items, M{"description": description, "unit": unit, "startDate": start, "endDate": end, "quantityMilli": q, "rate": rate, "amount": amount})
+			extra, e := itemExtras(s, u, t, "work_order", i, 0)
+			if e != nil {
+				return nil, e
+			}
+			items = append(items, M{"itemData": extra, "description": description, "unit": unit, "startDate": start, "endDate": end, "quantityMilli": q, "rate": rate, "amount": amount})
 		}
 		if number(d, "base") != total {
 			return nil, errors.New("Work-order total must equal its item amounts")
@@ -75,6 +79,8 @@ func workRecordDetails(s State, u M, t string, d M) (M, error) {
 	return details, nil
 }
 func redactWorkDetails(s State, u M, o M) {
+	redactItemExtras(s, u, str(o, "tenantId"), "work_order", arr(o, "items"))
+	redactContract(s, u, o)
 	t := str(o, "tenantId")
 	for _, raw := range arr(o, "items") {
 		i, valid := raw.(map[string]any)
@@ -106,5 +112,20 @@ func redactWorkDetails(s State, u M, o M) {
 	}
 	if access(s, u, t, "order_date", "purchase_order") == "hidden" {
 		delete(o, "purchaseOrderDate")
+	}
+}
+
+func redactContract(s State, u M, o M) {
+	t := str(o, "tenantId")
+	if access(s, u, t, "quotation", "work_order") == "hidden" {
+		for _, k := range []string{"quotationId", "quotationNumber", "rfqId"} {
+			delete(o, k)
+		}
+	}
+	if access(s, u, t, "contract", "work_order") == "hidden" || access(s, u, t, "amount", "work_order") == "hidden" {
+		delete(o, "boq")
+	}
+	if access(s, u, t, "contract", "work_order") == "hidden" {
+		delete(o, "contractType")
 	}
 }

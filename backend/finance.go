@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -81,6 +82,12 @@ func costSummary(s State, u M) []M {
 		}
 		for _, p := range s["payments"] {
 			if str(p, "tenantId") == id && financeStatus(s, p) == "Approved" {
+				paid += number(p, "paid")
+				tds += number(p, "tds")
+			}
+		}
+		for _, p := range extRows(s, "corporate_payment", id) {
+			if extensionStatus(s, p) == "Approved" {
 				paid += number(p, "paid")
 				tds += number(p, "tds")
 			}
@@ -179,11 +186,22 @@ func financialExtras(s State, u M, t string, d M, f string, old M) (M, int64, er
 		field := raw.(map[string]any)
 		k := str(field, "key")
 		known[k] = true
-		value := strings.TrimSpace(str(data, k))
+		if old != nil && access(s, u, t, k, f) != "edit" {
+			if value, exists := data[k]; exists && fmt.Sprint(value) != fmt.Sprint(obj(old, "data")[k]) {
+				return nil, 0, errors.New("Custom field editing permission is required")
+			}
+			if value, exists := obj(old, "data")[k]; exists {
+				data[k] = value
+			}
+		}
+		value := ""
+		if data[k] != nil {
+			value = strings.TrimSpace(fmt.Sprint(data[k]))
+		}
 		if field["required"] == true && value == "" {
 			return nil, 0, errors.New(str(field, "label") + " is required")
 		}
-		if value != "" && access(s, u, t, k, f) != "edit" {
+		if value != "" && old == nil && access(s, u, t, k, f) != "edit" {
 			return nil, 0, errors.New("Custom field editing permission is required")
 		}
 		if value != "" && str(field, "type") == "date" && !financeDate(value) {
@@ -248,7 +266,7 @@ func financialRecord(s State, u M, t, kind string, d M) (M, error) {
 				return nil, errors.New("Invalid order reference")
 			}
 			r := find(list, ref)
-			if r == nil || str(r, "tenantId") != t || !can(s, u, t, "view", refType) || (refType == "purchase_order" && poStatus(s, r) != "Approved") {
+			if r == nil || str(r, "tenantId") != t || !can(s, u, t, "view", refType) || (refType == "work_order" && orderStatus(s, r) != "Approved") || (refType == "purchase_order" && poStatus(s, r) != "Approved") {
 				return nil, errors.New("Select a valid order from this project")
 			}
 		} else {
@@ -321,7 +339,11 @@ func invoiceRecord(s State, u M, t string, d M) (M, error) {
 	if date == "" && len(str(o, "createdAt")) >= 10 {
 		date = str(o, "createdAt")[:10]
 	}
-	return M{"id": uuid(), "tenantId": t, "orderId": str(o, "id"), "orderNumber": str(o, "number"), "orderDate": date, "vendorId": str(v, "id"), "vendor": str(v, "name"), "invoiceNumber": num, "invoiceDate": str(d, "invoiceDate"), "description": strings.TrimSpace(str(d, "description")), "category": strings.TrimSpace(str(d, "category")), "amount": n, "remarks": strings.TrimSpace(str(d, "remarks")), "createdBy": str(u, "id"), "createdAt": now()}, nil
+	data, version, metaErr := financialExtras(s, u, t, d, "payment", nil)
+	if metaErr != nil {
+		return nil, metaErr
+	}
+	return M{"data": data, "formVersion": version, "id": uuid(), "tenantId": t, "orderId": str(o, "id"), "orderNumber": str(o, "number"), "orderDate": date, "vendorId": str(v, "id"), "vendor": str(v, "name"), "invoiceNumber": num, "invoiceDate": str(d, "invoiceDate"), "description": strings.TrimSpace(str(d, "description")), "category": strings.TrimSpace(str(d, "category")), "amount": n, "remarks": strings.TrimSpace(str(d, "remarks")), "createdBy": str(u, "id"), "createdAt": now()}, nil
 }
 func financialEvent(s State, u M, t string, d M) (M, error) {
 	doc := find(s["expenses"], str(d, "id"))

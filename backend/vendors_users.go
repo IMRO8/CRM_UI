@@ -52,12 +52,24 @@ func vendorRecord(s State, t string, d M) (M, error) {
 		v["onboardingStatus"] = old["onboardingStatus"]
 		v["createdBy"] = old["createdBy"]
 		v["createdAt"] = old["createdAt"]
+		v["data"] = old["data"]
+		v["formVersion"] = old["formVersion"]
 	}
 	return v, nil
 }
 func redactVendor(s State, u M, t string, v M) M {
 	if (!can(s, u, t, "view", "vendor") && !can(s, u, t, "view", "vendor_onboarding")) || (str(v, "onboardingStatus") != "" && str(v, "onboardingStatus") != "Active" && !can(s, u, t, "view", "vendor_onboarding")) {
 		return nil
+	}
+	for key := range obj(v, "data") {
+		if access(s, u, t, key, "vendor_onboarding") == "hidden" {
+			delete(obj(v, "data"), key)
+		}
+	}
+	for key := range obj(v, "vendorData") {
+		if access(s, u, t, key, "vendor") == "hidden" {
+			delete(obj(v, "vendorData"), key)
+		}
 	}
 	for _, key := range vendorFields {
 		if key != "onboardingStatus" && (!can(s, u, t, "view", "vendor") || access(s, u, t, key, "vendor") == "hidden") && (!can(s, u, t, "view", "vendor_onboarding") || access(s, u, t, key, "vendor_onboarding") == "hidden") {
@@ -77,6 +89,16 @@ func manageVendorUser(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) 
 			return nil, err
 		}
 		before := find(s["vendors"], str(v, "id"))
+		var schema M
+		if before != nil && number(before, "vendorFormVersion") > 0 {
+			schema = M{"formVersion": before["vendorFormVersion"], "data": before["vendorData"]}
+		}
+		data, version, e := financialExtras(s, u, t, d, "vendor", schema)
+		if e != nil {
+			return nil, e
+		}
+		v["vendorData"] = data
+		v["vendorFormVersion"] = version
 		if before == nil {
 			_, err = tx.Exec("INSERT INTO vendors(id,tenant_id,deleted,body) VALUES($1,$2,false,$3)", str(v, "id"), t, jsonBody(v))
 		} else {
@@ -207,6 +229,12 @@ func redactVendorSnapshot(s State, u M, t string, v M) M {
 	for _, key := range vendorFields {
 		if access(s, u, t, key, "vendor") == "hidden" {
 			delete(v, key)
+		}
+	}
+	delete(v, "data")
+	for k := range obj(v, "vendorData") {
+		if access(s, u, t, k, "vendor") == "hidden" {
+			delete(obj(v, "vendorData"), k)
 		}
 	}
 	return v

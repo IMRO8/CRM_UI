@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 )
 
-var purchaseFields = []string{"amount", "description", "materials", "order_date"}
+var purchaseFields = []string{"amount", "description", "materials", "order_date", "reference", "purpose"}
 var inventoryFields = []string{"materials", "quantity"}
 
 func integer(m M, k string, min, max int64) (int64, error) {
@@ -73,6 +72,16 @@ func purchaseRecord(s State, u M, t string, d M) (M, error) {
 	if !can(s, u, t, action, "purchase_order") || !fieldsEditable(s, u, t, "purchase_order", purchaseFields) {
 		return nil, errors.New("Purchase order and field editing permissions are required")
 	}
+	wo := find(s["orders"], str(d, "orderId"))
+	if wo == nil || str(wo, "tenantId") != t || !can(s, u, t, "view", "work_order") || strings.TrimSpace(str(d, "purpose")) == "" {
+		return nil, errors.New("Project work order and purchase purpose are mandatory")
+	}
+	if orderStatus(s, wo) == "Rejected" {
+		return nil, errors.New("Choose a work order that has not been rejected")
+	}
+	if wo["workflowEnabled"] == true && str(wo, "contractType") != "Labour" && orderStatus(s, wo) != "Approved" {
+		return nil, errors.New("Material PO needs an approved work order")
+	}
 	v := find(s["vendors"], str(d, "vendorId"))
 	if v == nil || str(v, "tenantId") != t || v["deleted"] == true || (str(v, "onboardingStatus") != "" && str(v, "onboardingStatus") != "Active") {
 		return nil, errors.New("Select an active project vendor")
@@ -114,47 +123,19 @@ func purchaseRecord(s State, u M, t string, d M) (M, error) {
 		if total > 100000000000000 {
 			return nil, errors.New("Purchase order exceeds supported range")
 		}
-		lines = append(lines, M{"id": uuid(), "material": material, "unit": unit, "kind": kind, "quantityMilli": q, "rate": rate, "total": value})
+		purpose := strings.TrimSpace(str(l, "purpose"))
+		if purpose == "" {
+			return nil, errors.New("Explain why each material or rental is needed")
+		}
+		extra, e := itemExtras(s, u, t, "purchase_order", l, number(old, "formVersion"))
+		if e != nil {
+			return nil, e
+		}
+		lines = append(lines, M{"itemData": extra, "purpose": purpose, "id": uuid(), "material": material, "unit": unit, "kind": kind, "quantityMilli": q, "rate": rate, "total": value})
 	}
-	f := latest(s, "purchase_order")
-	if old != nil {
-		for _, version := range s["forms"] {
-			if str(version, "id") == "purchase_order" && number(version, "version") == number(old, "formVersion") {
-				f = version
-			}
-		}
-	}
-	if f == nil {
-		return nil, errors.New("Purchase order form not found")
-	}
-	data := obj(d, "data")
-	known := map[string]bool{}
-	for _, raw := range arr(f, "fields") {
-		field := raw.(map[string]any)
-		k := str(field, "key")
-		known[k] = true
-		value := strings.TrimSpace(str(data, k))
-		if field["required"] == true && value == "" {
-			return nil, errors.New(str(field, "label") + " is required")
-		}
-		if value != "" && access(s, u, t, k, "purchase_order") != "edit" {
-			return nil, errors.New("Custom field editing permission is required")
-		}
-		if value != "" && str(field, "type") == "number" {
-			if _, err := strconv.ParseFloat(value, 64); err != nil {
-				return nil, errors.New("Custom field must be a number")
-			}
-		}
-		if value != "" && str(field, "type") == "date" {
-			if _, err := time.Parse("2006-01-02", value); err != nil {
-				return nil, errors.New("Custom field must be a date")
-			}
-		}
-	}
-	for k := range data {
-		if !known[k] {
-			return nil, errors.New("Unknown custom field: " + k)
-		}
+	data, version, metaErr := financialExtras(s, u, t, d, "purchase_order", old)
+	if metaErr != nil {
+		return nil, metaErr
 	}
 	orderDate := str(d, "orderDate")
 	if orderDate == "" && old != nil {
@@ -169,7 +150,7 @@ func purchaseRecord(s State, u M, t string, d M) (M, error) {
 	if _, err := time.Parse("2006-01-02", orderDate); err != nil {
 		return nil, errors.New("Enter a valid purchase order date")
 	}
-	p := M{"id": uuid(), "tenantId": t, "number": n, "description": description, "vendorId": str(v, "id"), "vendor": str(v, "name"), "vendorSnapshot": v, "lines": lines, "total": total, "data": data, "orderDate": orderDate, "formVersion": number(f, "version"), "createdBy": str(u, "id"), "createdAt": now(), "updatedAt": now(), "approvalPolicy": 2, "creatorSuperuser": admin(u)}
+	p := M{"orderId": str(wo, "id"), "orderNumber": str(wo, "number"), "purpose": strings.TrimSpace(str(d, "purpose")), "id": uuid(), "tenantId": t, "number": n, "description": description, "vendorId": str(v, "id"), "vendor": str(v, "name"), "vendorSnapshot": v, "lines": lines, "total": total, "data": data, "orderDate": orderDate, "formVersion": version, "createdBy": str(u, "id"), "createdAt": now(), "updatedAt": now(), "approvalPolicy": 2, "creatorSuperuser": admin(u)}
 	if old != nil {
 		p["id"] = str(old, "id")
 		p["createdBy"] = str(old, "createdBy")
@@ -258,6 +239,10 @@ func manageProcurement(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error)
 		}
 		return ok, logAudit(tx, u, t, "Purchase order "+str(e, "action")+" "+str(e, "stage"), str(find(s["purchaseOrders"], str(d, "id")), "number"))
 	case "purchase-receive":
+		extra, version, metaErr := financialExtras(s, u, t, d, "inventory", nil)
+		if metaErr != nil {
+			return nil, metaErr
+		}
 		p := find(s["purchaseOrders"], str(d, "id"))
 		if p == nil || str(p, "tenantId") != t || poStatus(s, p) != "Approved" {
 			return nil, errors.New("Receive only an approved purchase order")
@@ -300,12 +285,16 @@ func manageProcurement(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error)
 				return nil, err
 			}
 		}
-		m := M{"id": uuid(), "lotId": str(lot, "id"), "lineId": str(line, "id"), "tenantId": t, "kind": "receipt", "quantityMilli": q, "actorId": str(u, "id"), "at": now()}
+		m := M{"data": extra, "formVersion": version, "id": uuid(), "lotId": str(lot, "id"), "lineId": str(line, "id"), "tenantId": t, "kind": "receipt", "quantityMilli": q, "actorId": str(u, "id"), "at": now()}
 		if err = stockMovement(tx, m); err != nil {
 			return nil, err
 		}
 		return ok, logAudit(tx, u, t, "Purchased materials received into inventory", str(p, "number")+" · "+str(line, "material"))
 	case "inventory-transfer", "inventory-issue":
+		extra, version, metaErr := financialExtras(s, u, t, d, "inventory", nil)
+		if metaErr != nil {
+			return nil, metaErr
+		}
 		if !can(s, u, t, "edit", "inventory") || !fieldsEditable(s, u, t, "inventory", inventoryFields) {
 			return nil, errors.New("Inventory editing permission is required")
 		}
@@ -331,7 +320,7 @@ func manageProcurement(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error)
 			}
 			ref = uuid()
 			movementKind = "transfer-out"
-			in := M{"id": uuid(), "lotId": str(lot, "id"), "tenantId": target, "kind": "transfer-in", "quantityMilli": q, "transferId": ref, "counterpartyId": t, "reason": reason, "actorId": str(u, "id"), "at": now()}
+			in := M{"data": M{}, "formVersion": version, "id": uuid(), "lotId": str(lot, "id"), "tenantId": target, "kind": "transfer-in", "quantityMilli": q, "transferId": ref, "counterpartyId": t, "reason": reason, "actorId": str(u, "id"), "at": now()}
 			if err = stockMovement(tx, in); err != nil {
 				return nil, err
 			}
@@ -339,7 +328,7 @@ func manageProcurement(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error)
 				return nil, err
 			}
 		}
-		out := M{"id": uuid(), "lotId": str(lot, "id"), "tenantId": t, "kind": movementKind, "quantityMilli": -q, "transferId": ref, "counterpartyId": target, "reason": reason, "actorId": str(u, "id"), "at": now()}
+		out := M{"data": extra, "formVersion": version, "id": uuid(), "lotId": str(lot, "id"), "tenantId": t, "kind": movementKind, "quantityMilli": -q, "transferId": ref, "counterpartyId": target, "reason": reason, "actorId": str(u, "id"), "at": now()}
 		if err = stockMovement(tx, out); err != nil {
 			return nil, err
 		}
@@ -375,7 +364,11 @@ func manageProject(tx *sql.Tx, s State, u M, kind string, d M) (M, error) {
 	if name == "" || code == "" || len(name) > 200 || len(code) > 30 {
 		return nil, errors.New("Project name and code are required (up to 200 / 30 characters)")
 	}
-	p := M{"id": uuid(), "name": name, "code": code, "location": strings.TrimSpace(str(d, "location")), "deleted": false}
+	data, version, metaErr := financialExtras(s, u, str(old, "id"), d, "project", old)
+	if metaErr != nil {
+		return nil, metaErr
+	}
+	p := M{"data": data, "formVersion": version, "id": uuid(), "name": name, "code": code, "location": strings.TrimSpace(str(d, "location")), "deleted": false}
 	var err error
 	action := "Project tenant created"
 	if old != nil {
@@ -404,6 +397,16 @@ func redactProcurement(s State, u M) {
 				l := raw.(map[string]any)
 				delete(l, "rate")
 				delete(l, "total")
+			}
+		}
+		if access(s, u, t, "reference", "purchase_order") == "hidden" {
+			delete(p, "orderId")
+			delete(p, "orderNumber")
+		}
+		if access(s, u, t, "purpose", "purchase_order") == "hidden" {
+			delete(p, "purpose")
+			for _, raw := range arr(p, "lines") {
+				delete(raw.(map[string]any), "purpose")
 			}
 		}
 		if access(s, u, t, "order_date", "purchase_order") == "hidden" {
@@ -441,6 +444,11 @@ func redactProcurement(s State, u M) {
 	materialVisible := map[string]bool{}
 	for _, m := range s["stockMovements"] {
 		t := str(m, "tenantId")
+		for k := range obj(m, "data") {
+			if access(s, u, t, k, "inventory") == "hidden" {
+				delete(obj(m, "data"), k)
+			}
+		}
 		if !can(s, u, t, "view", "inventory") {
 			continue
 		}

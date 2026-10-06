@@ -140,6 +140,9 @@ func status(s State, a M) string {
 	return financialStatus(a, events)
 }
 func effective(s State, o M) int64 {
+	if orderStatus(s, o) != "Approved" {
+		return 0
+	}
 	n := number(o, "base")
 	for _, a := range s["amendments"] {
 		if str(a, "orderId") == str(o, "id") && status(s, a) == "Approved" {
@@ -160,27 +163,32 @@ func latest(s State, id string) M {
 func loadState(tx *sql.Tx) (State, error) {
 	s := State{}
 	queries := map[string]string{
-		"expenses":       "SELECT body FROM finance_documents WHERE kind='expense' ORDER BY body->>'createdAt',id",
-		"payments":       "SELECT body FROM finance_documents WHERE kind='payment' ORDER BY body->>'createdAt',id",
-		"invoices":       "SELECT body FROM vendor_invoices ORDER BY invoice_date,id",
-		"financeEvents":  "SELECT body FROM finance_events ORDER BY (body->>'at')::timestamptz,id",
-		"invoiceEvents":  "SELECT body FROM invoice_events ORDER BY (body->>'at')::timestamptz,id",
-		"users":          "SELECT jsonb_build_object('id',id,'name',name,'title',title,'superuser',superuser,'username',username) FROM users ORDER BY id",
-		"tenants":        "SELECT body || jsonb_build_object('deleted',deleted) FROM tenants ORDER BY code",
-		"reras":          "SELECT body FROM rera_accounts ORDER BY number",
-		"roles":          "SELECT body FROM roles ORDER BY id",
-		"memberships":    "SELECT jsonb_build_object('tenantId',m.tenant_id,'userId',m.user_id,'roleIds',coalesce((SELECT jsonb_agg(role_id ORDER BY role_id) FROM membership_roles r WHERE r.tenant_id=m.tenant_id AND r.user_id=m.user_id),'[]'::jsonb)) FROM memberships m ORDER BY tenant_id,user_id",
-		"forms":          "SELECT body FROM form_versions ORDER BY id,version",
-		"orders":         "SELECT w.body || coalesce((SELECT jsonb_build_object('vendorId',v.vendor_id,'vendorSnapshot',v.snapshot) FROM work_order_vendors v WHERE v.order_id=w.id),'{}'::jsonb) FROM work_orders w ORDER BY w.body->>'createdAt',w.id",
-		"vendors":        "SELECT body FROM vendors ORDER BY body->>'name',id",
-		"amendments":     "SELECT body || jsonb_build_object('approvalPolicy',approval_policy,'creatorSuperuser',creator_superuser) FROM amendments ORDER BY body->>'createdAt',id",
-		"events":         "SELECT body FROM amendment_events ORDER BY body->>'at',id",
-		"audit":          "SELECT body FROM audit_log ORDER BY body->>'at',id",
-		"purchaseOrders": "SELECT body || jsonb_build_object('orderDate',coalesce(order_date::text,substring(body->>'createdAt',1,10)),'approvalPolicy',approval_policy,'creatorSuperuser',creator_superuser) FROM purchase_orders ORDER BY body->>'createdAt',id",
-		"purchaseEvents": "SELECT body FROM purchase_events ORDER BY body->>'at',id",
-		"stockLots":      "SELECT body FROM stock_lots ORDER BY id",
-		"stockMovements": "SELECT body FROM stock_movements ORDER BY body->>'at',id",
-		"uploads":        "SELECT body - 'csv' FROM uploads ORDER BY id",
+		"extensions":      "SELECT body FROM erp_extensions ORDER BY (body->>'createdAt')::timestamptz,id",
+		"extensionEvents": "SELECT body FROM erp_extension_events ORDER BY (body->>'at')::timestamptz,id",
+		"suiteRecords":    "SELECT body FROM operational_records ORDER BY (body->>'createdAt')::timestamptz,id",
+		"suiteEvents":     "SELECT body FROM operational_events ORDER BY (body->>'at')::timestamptz,id",
+		"orderEvents":     "SELECT body FROM work_order_events ORDER BY (body->>'at')::timestamptz,id",
+		"expenses":        "SELECT body FROM finance_documents WHERE kind='expense' ORDER BY body->>'createdAt',id",
+		"payments":        "SELECT body FROM finance_documents WHERE kind='payment' ORDER BY body->>'createdAt',id",
+		"invoices":        "SELECT body FROM vendor_invoices ORDER BY invoice_date,id",
+		"financeEvents":   "SELECT body FROM finance_events ORDER BY (body->>'at')::timestamptz,id",
+		"invoiceEvents":   "SELECT body FROM invoice_events ORDER BY (body->>'at')::timestamptz,id",
+		"users":           "SELECT jsonb_build_object('id',id,'name',name,'title',title,'superuser',superuser,'username',username) FROM users ORDER BY id",
+		"tenants":         "SELECT body || jsonb_build_object('deleted',deleted) FROM tenants ORDER BY code",
+		"reras":           "SELECT body FROM rera_accounts ORDER BY number",
+		"roles":           "SELECT body FROM roles ORDER BY id",
+		"memberships":     "SELECT jsonb_build_object('tenantId',m.tenant_id,'userId',m.user_id,'roleIds',coalesce((SELECT jsonb_agg(role_id ORDER BY role_id) FROM membership_roles r WHERE r.tenant_id=m.tenant_id AND r.user_id=m.user_id),'[]'::jsonb)) FROM memberships m ORDER BY tenant_id,user_id",
+		"forms":           "SELECT body FROM form_versions ORDER BY id,version",
+		"orders":          "SELECT w.body || coalesce((SELECT jsonb_build_object('vendorId',v.vendor_id,'vendorSnapshot',v.snapshot) FROM work_order_vendors v WHERE v.order_id=w.id),'{}'::jsonb) FROM work_orders w ORDER BY w.body->>'createdAt',w.id",
+		"vendors":         "SELECT body FROM vendors ORDER BY body->>'name',id",
+		"amendments":      "SELECT body || jsonb_build_object('approvalPolicy',approval_policy,'creatorSuperuser',creator_superuser) FROM amendments ORDER BY body->>'createdAt',id",
+		"events":          "SELECT body FROM amendment_events ORDER BY body->>'at',id",
+		"audit":           "SELECT body FROM audit_log ORDER BY body->>'at',id",
+		"purchaseOrders":  "SELECT body || jsonb_build_object('orderDate',coalesce(order_date::text,substring(body->>'createdAt',1,10)),'approvalPolicy',approval_policy,'creatorSuperuser',creator_superuser) FROM purchase_orders ORDER BY body->>'createdAt',id",
+		"purchaseEvents":  "SELECT body FROM purchase_events ORDER BY body->>'at',id",
+		"stockLots":       "SELECT body FROM stock_lots ORDER BY id",
+		"stockMovements":  "SELECT body FROM stock_movements ORDER BY body->>'at',id",
+		"uploads":         "SELECT body - 'csv' FROM uploads ORDER BY id",
 	}
 	for key, q := range queries {
 		s[key] = []M{}
@@ -210,7 +218,21 @@ func loadState(tx *sql.Tx) (State, error) {
 	return s, nil
 }
 func redact(s State, u M) State {
+	for _, p := range s["tenants"] {
+		for k := range obj(p, "data") {
+			if access(s, u, str(p, "id"), k, "project") == "hidden" {
+				delete(obj(p, "data"), k)
+			}
+		}
+	}
+	s["dashboards"] = dashboardSummary(s, u)
+	s["vendorReports"] = vendorReports(s, u)
 	redactFinance(s, u)
+	redactSuite(s, u)
+	redactExtensions(s, u)
+	for _, p := range s["purchaseOrders"] {
+		redactItemExtras(s, u, str(p, "tenantId"), "purchase_order", arr(p, "lines"))
+	}
 	redactProcurement(s, u)
 	vendors := []M{}
 	for _, v := range s["vendors"] {
@@ -228,6 +250,11 @@ func redact(s State, u M) State {
 		for _, key := range []string{"number", "bank", "ifsc", "label"} {
 			if access(s, u, t, key, "rera_account") == "hidden" {
 				delete(r, key)
+			}
+		}
+		for k := range obj(r, "data") {
+			if access(s, u, t, k, "rera_account") == "hidden" {
+				delete(obj(r, "data"), k)
 			}
 		}
 		banks = append(banks, r)
@@ -304,12 +331,12 @@ func redact(s State, u M) State {
 		}
 		s["audit"] = logs
 		people := map[string]bool{str(u, "id"): true}
-		for _, key := range []string{"expenses", "payments", "invoices"} {
+		for _, key := range []string{"expenses", "payments", "invoices", "suiteRecords"} {
 			for _, d := range s[key] {
 				people[str(d, "createdBy")] = true
 			}
 		}
-		for _, key := range []string{"financeEvents", "invoiceEvents"} {
+		for _, key := range []string{"financeEvents", "invoiceEvents", "suiteEvents", "orderEvents"} {
 			for _, e := range s[key] {
 				people[str(e, "actorId")] = true
 			}
@@ -503,6 +530,10 @@ func serveAPI(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer tx.Rollback()
+	if strings.HasPrefix(p, "boq/") && r.Method == "GET" {
+		serveBOQ(w, r, tx, strings.TrimPrefix(p, "boq/"), id)
+		return
+	}
 	if p == "state" && r.Method == "GET" {
 		s, err := loadState(tx)
 		if err != nil {
@@ -533,7 +564,7 @@ func serveAPI(w http.ResponseWriter, r *http.Request) {
 		}
 		kind := str(b, "kind")
 		d := obj(b, "data")
-		config := contains([]any{"role", "role-delete", "membership", "form", "tenant", "tenant-delete", "rera", "user-create", "user-credentials"}, kind)
+		config := contains([]any{"role", "role-delete", "membership", "form", "tenant", "tenant-delete", "rera", "extension-save", "user-create", "user-credentials"}, kind)
 		lockSQL := "SELECT pg_advisory_xact_lock_shared(7249135)"
 		if config {
 			lockSQL = "SELECT pg_advisory_xact_lock(7249135)"
@@ -740,6 +771,12 @@ func mutate(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {
 	if contains([]any{"onboarding-save", "onboarding-transition"}, kind) {
 		return manageOnboarding(tx, s, u, t, kind, d)
 	}
+	if kind == "extension-save" || kind == "extension-transition" {
+		return manageExtensions(tx, s, u, t, kind, d)
+	}
+	if contains([]any{"suite-save", "suite-transition", "order-transition"}, kind) {
+		return manageSuite(tx, s, u, t, kind, d)
+	}
 	id := str(u, "id")
 	if contains([]any{"vendor", "vendor-delete", "user-create", "user-credentials"}, kind) {
 		return manageVendorUser(tx, s, u, t, kind, d)
@@ -847,11 +884,18 @@ func mutate(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {
 				return nil, errors.New("Unknown custom field: " + k)
 			}
 		}
+		contract, err := workContract(s, u, t, d)
+		if err != nil {
+			return nil, err
+		}
 		details, err := workRecordDetails(s, u, t, d)
 		if err != nil {
 			return nil, err
 		}
 		m := M{"id": uuid(), "tenantId": t, "number": str(d, "number"), "vendor": str(d, "vendor"), "vendorId": str(vendor, "id"), "vendorSnapshot": vendor, "description": str(d, "description"), "base": base, "formId": "work_order", "formVersion": number(f, "version"), "data": data, "createdBy": id, "createdAt": now()}
+		for k, v := range contract {
+			m[k] = v
+		}
 		for k, v := range details {
 			m[k] = v
 		}
@@ -867,7 +911,18 @@ func mutate(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {
 				return nil, err
 			}
 		}
-		return ok, logAudit(tx, u, t, "Work order created", str(m, "number"))
+		if str(contract, "contractType") == "Material construction" {
+			b := obj(d, "boq")
+			raw, e := boqBytes(b)
+			if e != nil {
+				return nil, e
+			}
+			meta := obj(contract, "boq")
+			if _, e = tx.Exec("INSERT INTO work_order_boq(order_id,tenant_id,name,mime,signed,content,sha256) VALUES($1,$2,$3,$4,true,$5,$6)", str(m, "id"), t, str(meta, "name"), str(meta, "mime"), raw, str(meta, "sha256")); e != nil {
+				return nil, e
+			}
+		}
+		return ok, logAudit(tx, u, t, "Work order draft created", str(m, "number"))
 	case "transition":
 		a := find(s["amendments"], str(d, "id"))
 		if a == nil {
@@ -936,7 +991,11 @@ func mutate(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {
 		if strings.TrimSpace(str(d, "bank")) == "" || strings.TrimSpace(str(d, "ifsc")) == "" {
 			return nil, errors.New("Bank and IFSC are required")
 		}
-		m := M{"id": uuid(), "tenantId": t, "number": number, "bank": strings.TrimSpace(str(d, "bank")), "ifsc": strings.ToUpper(strings.TrimSpace(str(d, "ifsc"))), "label": str(d, "label")}
+		extra, version, extraErr := financialExtras(s, u, t, d, "rera_account", nil)
+		if extraErr != nil {
+			return nil, extraErr
+		}
+		m := M{"data": extra, "formVersion": version, "id": uuid(), "tenantId": t, "number": number, "bank": strings.TrimSpace(str(d, "bank")), "ifsc": strings.ToUpper(strings.TrimSpace(str(d, "ifsc"))), "label": str(d, "label")}
 		_, err := tx.Exec("INSERT INTO rera_accounts(id,tenant_id,number,body) VALUES($1,$2,$3,$4)", str(m, "id"), t, number, jsonBody(m))
 		if err != nil {
 			return nil, err
@@ -1050,7 +1109,7 @@ func mutate(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {
 		if last := latest(s, fid); last != nil {
 			v = number(last, "version") + 1
 		}
-		fields := arr(d, "fields")
+		fields := append(arr(d, "fields"), arr(d, "itemFields")...)
 		keys := map[string]bool{}
 		keyPattern := regexp.MustCompile(`^[a-z][a-z0-9_]{0,63}$`)
 		reserved := map[string]bool{"amount": true, "description": true, "reason": true, "id": true, "base": true, "delta": true}
@@ -1065,7 +1124,7 @@ func mutate(tx *sql.Tx, s State, u M, t, kind string, d M) (M, error) {
 			}
 			keys[key] = true
 		}
-		m := M{"id": fid, "name": name, "version": v, "fields": fields, "createdBy": id, "createdAt": now()}
+		m := M{"id": fid, "name": name, "version": v, "fields": arr(d, "fields"), "itemFields": arr(d, "itemFields"), "createdBy": id, "createdAt": now()}
 		_, err := tx.Exec("INSERT INTO form_versions(id,version,body) VALUES($1,$2,$3)", fid, v, jsonBody(m))
 		if err != nil {
 			return nil, err
@@ -1143,11 +1202,14 @@ func migrate() error {
 		}
 	}
 	grants := `GRANT USAGE ON SCHEMA public TO ledger_app;
+ GRANT SELECT,INSERT,UPDATE ON erp_extensions TO ledger_app;
+ GRANT SELECT,INSERT ON erp_extension_events TO ledger_app;
  GRANT SELECT ON users,tenants,roles,memberships,membership_roles,form_versions,rera_accounts,work_orders,uploads,amendments,amendment_events,audit_log TO ledger_app;
  GRANT INSERT ON tenants,roles,memberships,membership_roles,form_versions,rera_accounts,work_orders,uploads,amendments,amendment_events,audit_log TO ledger_app;
  GRANT UPDATE ON roles,tenants TO ledger_app;
  GRANT SELECT,INSERT,UPDATE ON purchase_orders,finance_documents TO ledger_app;
- GRANT SELECT,INSERT ON vendor_invoices,finance_events,invoice_events TO ledger_app;
+ GRANT SELECT,INSERT ON vendor_invoices,finance_events,invoice_events,operational_events,work_order_events,work_order_boq TO ledger_app;
+ GRANT SELECT,INSERT,UPDATE ON operational_records TO ledger_app;
  GRANT SELECT,INSERT ON purchase_events,stock_lots,stock_movements TO ledger_app;
  GRANT DELETE ON membership_roles,roles TO ledger_app;
  GRANT SELECT,INSERT,DELETE ON sessions TO ledger_app;

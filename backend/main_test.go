@@ -102,7 +102,7 @@ func TestVendorProjectAndFieldControls(t *testing.T) {
 func TestPurchaseDraftAndInventoryRules(t *testing.T) {
 	s := fixture(t)
 	u := find(s["users"], "u1")
-	d := M{"number": "PO-FRACTION", "description": "Fractional cable", "vendorId": "v1", "lines": []any{M{"material": "Cable", "unit": "metre", "kind": "purchase", "quantityMilli": float64(1250), "rate": float64(101)}}, "data": M{}}
+	d := M{"orderId": "w1", "purpose": "Tower A wiring", "number": "PO-FRACTION", "description": "Fractional cable", "vendorId": "v1", "lines": []any{M{"purpose": "Tower A wiring", "material": "Cable", "unit": "metre", "kind": "purchase", "quantityMilli": float64(1250), "rate": float64(101)}}, "data": M{}}
 	p, err := purchaseRecord(s, u, "t1", d)
 	if err != nil || number(p, "total") != 126 {
 		t.Fatalf("fractional purchase: %v %v", p, err)
